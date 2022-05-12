@@ -22,7 +22,7 @@ public class DemoController {
         String randomSentence=(sentence[randomNumber]);
 
         model.addAttribute("sentence", randomSentence);
-        model.addAttribute("repolink", "https://github.com/yongxiuuu/myrepo-workshop01.git");
+        model.addAttribute("repolink", "https://github.com/yongxiuuu/myrepo.git");
         return "welcome";
     }
 }
