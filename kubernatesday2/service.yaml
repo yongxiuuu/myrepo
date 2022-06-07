@@ -1,0 +1,15 @@
+---
+#core group use v1
+apiVersion: v1
+kind: Service
+metadata:
+  name: dov-bear-svc
+  labels:
+    name: dov-bear-svc
+spec:
+  type: ClusterIP
+  selector:
+    name: dov-bear-po
+  ports:
+  - port: 8080 # service port
+    targetPort: dov-port # container port 3000

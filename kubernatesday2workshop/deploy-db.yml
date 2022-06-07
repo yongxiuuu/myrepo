@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bgg-database
+  labels:
+    name: bgg-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: bgg-database-po
+  template:
+    metadata:
+      name: bgg-database-po
+      labels:
+        name: bgg-database-po
+    spec:
+      containers:
+      - name: bgg-database-container
+        image: stackupiss/bgg-database:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+         - name: dov-port-db
+           containerPort: 3306
