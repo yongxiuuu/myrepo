@@ -1,0 +1,24 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dov-bear-ing
+  labels:
+    name: dov-bear-ing
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+   service:
+    name: dov-bear-service
+    port: 8080
+  rules:
+  - host: dov-bear.137.184.251.99.nip.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: dov-bear-service
+            port: 
+              number: 8080

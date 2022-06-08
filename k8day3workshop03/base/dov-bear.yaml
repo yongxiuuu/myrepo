@@ -1,0 +1,73 @@
+---
+# https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#configmap-v1-core
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dov-bear-configmap
+  labels:
+    name: dov-bear-configmap
+    owner: he
+data:
+  INSTANCE_NAME: k8s dov-bear configmap
+---
+# https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#secret-v1-core
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dov-bear-secret
+  labels:
+    name: dov-bear-secret
+    owner: he
+type: Opaque
+data:
+  INSTANCE_NAME: azhzIGRvdi1iZWFyIHNlY3JldA==
+---
+# https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#deployment-v1-apps
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dov-bear-deploy
+  labels: 
+    name: dov-bear-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: dov-bear-pod
+  template:
+    metadata:
+      name: dov-bear-pod
+      labels:
+        name: dov-bear-pod
+        owner: he
+    spec:
+      containers:
+      - name: dov-bear-container
+        image: chukmunnlee/dov-bear:v2
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: dov-bear-secret
+        ports:
+        - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+            scheme: HTTP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dov-bear-service
+  labels:
+    name: dov-bear-service
+spec:
+  type: ClusterIP
+  # tells us where is the pod
+  selector:
+    name: dov-bear-pod
+    # tells us which target port num of a pod to link to
+  ports:
+  - port: 8080
+    targetPort: 3000
